@@ -1,0 +1,2 @@
+GROQ_API_KEY=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
+DATABASE_URL=postgresql://neondb_owner:npg_u0Tq6RGjvwrM@ep-hidden-queen-ao6qag4i.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
