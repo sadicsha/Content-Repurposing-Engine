@@ -19,7 +19,10 @@ NOTION_DATABASE_ID = os.getenv("NOTION_DATABASE_ID")
 
 notion = Client(auth=NOTION_API_KEY)
 
-Base.metadata.create_all(bind=engine)
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as db_err:
+    print(f"[Warning] Neon PostgreSQL connection failed at startup: {db_err}")
 
 app = FastAPI()
 
