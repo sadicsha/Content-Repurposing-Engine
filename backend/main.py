@@ -52,72 +52,82 @@ def generate(request: ContentRequest, db: Session = Depends(get_db)):
     )
 
     # Save to Neon Database
-    save_content(
-        db,
-        request.content,
-        request.platform,
-        request.tone,
-        generated
-    )
+    try:
+        save_content(
+            db,
+            request.content,
+            request.platform,
+            request.tone,
+            generated
+        )
+    except Exception as db_err:
+        print(f"[Warning] Failed to save to Neon Database: {db_err}")
 
     # Save to Notion Database
-    notion.pages.create(
-        parent={
-            "database_id": NOTION_DATABASE_ID
-        },
-        properties={
-            "Platform": {
-                "title": [
-                    {
-                        "text": {
-                            "content": request.platform
-                        }
-                    }
-                ]
+    try:
+        notion.pages.create(
+            parent={
+                "database_id": NOTION_DATABASE_ID
             },
-
-            "Tone": {
-                "rich_text": [
-                    {
-                        "text": {
-                            "content": request.tone
+            properties={
+                "Platform": {
+                    "title": [
+                        {
+                            "text": {
+                                "content": request.platform
+                            }
                         }
-                    }
-                ]
-            },
+                    ]
+                },
 
-            "Original Content": {
-                "rich_text": [
-                    {
-                        "text": {
-                            "content": request.content
+                "Tone": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": request.tone
+                            }
                         }
-                    }
-                ]
-            },
+                    ]
+                },
 
-            "Generated Content": {
-                "rich_text": [
-                    {
-                        "text": {
-                            "content": generated
+                "Original Content": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": request.content
+                            }
                         }
-                    }
-                ]
+                    ]
+                },
+
+                "Generated Content": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": generated
+                            }
+                        }
+                    ]
+                }
             }
-        }
-    )
+        )
+    except Exception as notion_err:
+        print(f"[Warning] Failed to save to Notion: {notion_err}")
 
     # Send to Zapier
-    requests.post(
-        "https://hooks.zapier.com/hooks/catch/27563844/4yzsq3s/",
-        json={
-            "platform": request.platform,
-            "tone": request.tone,
-            "original_content": request.content,
-            "generated_content": generated
-        }
-    )
+    try:
+        requests.post(
+            "https://hooks.zapier.com/hooks/catch/27563844/4yzsq3s/",
+            json={
+                "platform": request.platform,
+                "tone": request.tone,
+                "original_content": request.content,
+                "generated_content": generated
+            },
+            timeout=5
+        )
+    except Exception as zap_err:
+        print(f"[Warning] Failed to trigger Zapier: {zap_err}")
 
     return {
         "generated_content": generated
@@ -126,22 +136,21 @@ def generate(request: ContentRequest, db: Session = Depends(get_db)):
 
 @app.get("/history")
 def get_history(db: Session = Depends(get_db)):
-
-    history = db.query(Content).all()
-
-    result = []
-
-    for item in history:
-
-        result.append({
-            "id": item.id,
-            "platform": item.platform,
-            "tone": item.tone,
-            "original_content": item.original_content,
-            "generated_content": item.generated_content
-        })
-
-    return result
+    try:
+        history = db.query(Content).all()
+        result = []
+        for item in history:
+            result.append({
+                "id": item.id,
+                "platform": item.platform,
+                "tone": item.tone,
+                "original_content": item.original_content,
+                "generated_content": item.generated_content
+            })
+        return result
+    except Exception as db_err:
+        print(f"[Warning] Failed to fetch history from database: {db_err}")
+        return []
 
 
 @app.delete("/delete/{content_id}")

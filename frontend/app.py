@@ -68,19 +68,21 @@ st.markdown(
 
     .stApp {
         background: 
-          radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.15), transparent 45%),
-          radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.12), transparent 40%),
-          linear-gradient(rgba(255, 255, 255, 0.003) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.003) 1px, transparent 1px),
-          #08090d;
-        background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+          radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.18), transparent 45%),
+          radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.16), transparent 45%),
+          radial-gradient(circle at 50% 15%, rgba(236, 72, 153, 0.12), transparent 40%),
+          repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.002) 0px, rgba(255, 255, 255, 0.002) 2px, transparent 2px, transparent 10px),
+          linear-gradient(rgba(255, 255, 255, 0.004) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.004) 1px, transparent 1px),
+          #0b0c16;
+        background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
         color: #f1f5f9;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     section[data-testid="stSidebar"] {
-        background: #04060a !important;
-        border-right: 1px solid rgba(16, 185, 129, 0.1) !important;
+        background: #04050b !important;
+        border-right: 1px solid rgba(6, 182, 212, 0.1) !important;
     }
 
     .main-title {
@@ -88,7 +90,7 @@ st.markdown(
         font-size: 50px;
         font-weight: 800;
         letter-spacing: -1.5px;
-        background: linear-gradient(135deg, #ffffff 40%, #10b981 100%);
+        background: linear-gradient(135deg, #ffffff 20%, #a855f7 60%, #06b6d4 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-top: 15px;
@@ -114,8 +116,8 @@ st.markdown(
     }
 
     .platform-card {
-        background: rgba(255, 255, 255, 0.015);
-        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         padding: 12px 20px;
         border-radius: 16px;
         display: flex;
@@ -123,13 +125,15 @@ st.markdown(
         gap: 12px;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: default;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     }
 
     .platform-card:hover {
-        background: rgba(255, 255, 255, 0.03);
-        border-color: rgba(16, 185, 129, 0.3);
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px rgba(16, 185, 129, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(6, 182, 212, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 20px rgba(6, 182, 212, 0.25);
     }
 
     .platform-card span {
@@ -142,20 +146,20 @@ st.markdown(
     /* Glassmorphic Fields */
     textarea {
         border-radius: 14px !important;
-        background-color: rgba(255, 255, 255, 0.02) !important;
+        background-color: rgba(255, 255, 255, 0.015) !important;
         color: white !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
         transition: all 0.3s ease !important;
     }
 
     textarea:focus {
-        border-color: #10b981 !important;
-        background-color: rgba(255, 255, 255, 0.04) !important;
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2) !important;
+        border-color: #06b6d4 !important;
+        background-color: rgba(255, 255, 255, 0.03) !important;
+        box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2) !important;
     }
 
     div[data-baseweb="select"] > div {
-        background-color: rgba(255, 255, 255, 0.02) !important;
+        background-color: rgba(255, 255, 255, 0.015) !important;
         border-radius: 12px !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
         color: white !important;
@@ -163,7 +167,7 @@ st.markdown(
     }
 
     div[data-baseweb="select"] > div:hover {
-        border-color: rgba(16, 185, 129, 0.3) !important;
+        border-color: rgba(6, 182, 212, 0.3) !important;
     }
 
     /* Premium Action Button */
@@ -172,40 +176,40 @@ st.markdown(
         height: 48px;
         border-radius: 10px;
         border: none;
-        background: linear-gradient(135deg, #0d9488 0%, #10b981 100%);
+        background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
         color: white;
         font-size: 14px;
         font-weight: 600;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+        box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);
     }
 
     div.stButton > button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
-        background: linear-gradient(135deg, #14b8a6 0%, #059669 100%);
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.45);
+        background: linear-gradient(135deg, #8b5cf6 0%, #0ea5e9 100%);
     }
 
     /* Glass output */
     .generated-content {
-        background: rgba(255, 255, 255, 0.02);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.015);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        border-left: 4px solid #10b981;
+        border-left: 4px solid #a855f7;
         border-radius: 16px;
         padding: 24px;
         margin-top: 25px;
         line-height: 1.8;
         color: #cbd5e1;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
     }
 
     /* SEO Health Tags & Optimization Styles */
     .seo-tag {
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.25);
-        color: #10b981;
+        background: rgba(6, 182, 212, 0.08);
+        border: 1px solid rgba(6, 182, 212, 0.25);
+        color: #06b6d4;
         padding: 6px 12px;
         border-radius: 20px;
         font-size: 12px;
@@ -213,13 +217,13 @@ st.markdown(
         margin-right: 8px;
         margin-bottom: 8px;
         display: inline-block;
-        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.05);
+        box-shadow: 0 2px 10px rgba(6, 182, 212, 0.05);
         transition: all 0.3s ease;
     }
 
     .seo-tag:hover {
-        background: rgba(16, 185, 129, 0.2);
-        border-color: #10b981;
+        background: rgba(6, 182, 212, 0.15);
+        border-color: #0ea5e9;
         transform: scale(1.05);
     }
 
@@ -231,7 +235,7 @@ st.markdown(
     }
 
     .optimizer-placeholder {
-        background: rgba(255, 255, 255, 0.01);
+        background: rgba(255, 255, 255, 0.008);
         border: 1px dashed rgba(255, 255, 255, 0.08);
         border-radius: 16px;
         padding: 40px;
@@ -242,6 +246,7 @@ st.markdown(
         align-items: center;
         gap: 16px;
         margin-top: 20px;
+        backdrop-filter: blur(8px);
     }
 
     .optimizer-placeholder svg {
