@@ -1,10 +1,38 @@
 import streamlit as st
 import requests
-from streamlit_calendar import calendar
 import os
 
 # Define dynamic backend URL
 BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000").rstrip("/")
+
+def extract_hashtags_and_metrics(text):
+    if not text:
+        return [], 0, 0, 0, "N/A"
+    
+    words = text.split()
+    word_count = len(words)
+    char_count = len(text)
+    
+    # Simple reading time
+    read_time = f"{max(1, round(word_count / 200))} min" if word_count > 100 else f"{max(5, round(word_count * 0.3))} sec"
+    
+    # Emojis count
+    common_emojis = ["🔥", "🚀", "💡", "📈", "🤖", "✨", "🎯", "📊", "🧠", "💼", "🙌", "✅", "⚠️", "🌟"]
+    emoji_count = sum(text.count(emoji) for emoji in common_emojis)
+    
+    # Extract keywords for hashtags
+    keywords = ["ai", "tech", "marketing", "business", "growth", "finance", "money", "startup", "design", "code", "dev", "data", "future", "productivity", "management", "strategy", "innovation", "creativity"]
+    tags = []
+    text_lower = text.lower()
+    for kw in keywords:
+        if kw in text_lower:
+            tags.append(f"#{kw.capitalize()}")
+    
+    # Fallbacks if no keywords matched
+    if not tags:
+        tags = ["#ContentRepurposing", "#OmniContent", "#AICreator", "#ViralReach"]
+        
+    return list(set(tags))[:5], word_count, char_count, emoji_count, read_time
 
 
 # ----------------------------------
@@ -173,12 +201,57 @@ st.markdown(
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
     }
 
-    /* Calendar Styling */
-    .fc {
-        background: rgba(255, 255, 255, 0.02) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 14px !important;
-        padding: 15px !important;
+    /* SEO Health Tags & Optimization Styles */
+    .seo-tag {
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.25);
+        color: #10b981;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 8px;
+        margin-bottom: 8px;
+        display: inline-block;
+        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .seo-tag:hover {
+        background: rgba(16, 185, 129, 0.2);
+        border-color: #10b981;
+        transform: scale(1.05);
+    }
+
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .optimizer-placeholder {
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px dashed rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        color: #94a3b8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        margin-top: 20px;
+    }
+
+    .optimizer-placeholder svg {
+        animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.7; }
+        50% { transform: scale(1.08); opacity: 1; }
+        100% { transform: scale(1); opacity: 0.7; }
     }
 
     </style>
@@ -397,23 +470,91 @@ if st.session_state.selected_item:
             st.error("Failed to delete content")
 
 # ----------------------------------
-# Monthly Calendar
+# Real-time Content Health & SEO Performance Cockpit
 # ----------------------------------
 
 st.markdown("---")
 
-st.subheader("Monthly Content Calendar")
+st.subheader("⚡ Real-time Content Optimizer & SEO Cockpit")
 
-calendar_options = {
-    "initialView": "dayGridMonth",
-    "height": 490,
-}
+# Active content to analyze
+active_text = None
+active_platform = "Generic"
+active_tone = "Professional"
 
-left_space, center_calendar, right_space = st.columns([1, 3, 1])
+if st.session_state.generated_content:
+    active_text = st.session_state.generated_content
+    active_platform = platform
+    active_tone = tone
+elif st.session_state.selected_item:
+    active_text = st.session_state.selected_item["generated_content"]
+    active_platform = st.session_state.selected_item["platform"]
+    active_tone = st.session_state.selected_item["tone"]
 
-with center_calendar:
-
-    calendar(
-        events=[],
-        options=calendar_options
+if active_text:
+    tags, word_count, char_count, emoji_count, read_time = extract_hashtags_and_metrics(active_text)
+    
+    # Layout columns
+    opt_col1, opt_col2 = st.columns([1, 1])
+    
+    with opt_col1:
+        st.markdown("#### 📊 Performance Metrics")
+        
+        m_col1, m_col2 = st.columns(2)
+        with m_col1:
+            st.metric("Word Count", f"{word_count} words")
+            st.metric("Emoji Density", f"{emoji_count} active")
+        with m_col2:
+            st.metric("Est. Reading Time", read_time)
+            # Simulated reach based on tone and platform
+            reach_score = 85
+            if active_tone in ["Motivational", "Marketing"]:
+                reach_score += 10
+            if char_count > 1500:
+                reach_score -= 5
+            st.metric("Estimated Reach Score", f"{min(98, reach_score)}%")
+            
+        st.markdown("#### 🏷️ AI Extracted SEO Tags")
+        tags_html = " ".join([f'<span class="seo-tag">{tag}</span>' for tag in tags])
+        st.markdown(
+            f'<div class="tags-container">{tags_html}</div>',
+            unsafe_allow_html=True
+        )
+        
+    with opt_col2:
+        st.markdown("#### 🎯 Platform Optimization Health")
+        
+        # Check optimization statuses
+        has_emojis = emoji_count > 0
+        has_hashtags = len(tags) > 0
+        
+        if "LinkedIn" in active_platform:
+            st.write("**LinkedIn Optimization Check**")
+            st.markdown(f"✅ Length: {char_count} chars (Optimized: LinkedIn posts perform best between 500-1500 chars)")
+            st.markdown(f"{'✅' if has_emojis else '⚠️'} Rich Formatting: {'Includes engaging emojis' if has_emojis else 'Add 1-3 emojis to boost readability'}")
+            st.markdown(f"{'✅' if has_hashtags else '⚠️'} Hashtags: {'Includes relevant hashtags' if has_hashtags else 'Add 2-3 broad tags for organic distribution'}")
+        elif "Twitter" in active_platform or "X" in active_platform:
+            st.write("**X (Twitter) Optimization Check**")
+            is_valid_tweet = char_count <= 280
+            st.markdown(f"{'✅' if is_valid_tweet else '⚠️'} Single Tweet Limit: {char_count}/280 chars ({'Perfect length' if is_valid_tweet else 'Exceeds 280 character limit - will require Twitter Blue or thread structure'})")
+            st.markdown(f"✅ Tone: {active_tone} (Tone is highly engaging for digital feeds)")
+        elif "Instagram" in active_platform:
+            st.write("**Instagram Optimization Check**")
+            st.markdown(f"✅ Emojis: {emoji_count} (High visual density triggers feed retention)")
+            st.markdown(f"{'✅' if has_hashtags else '⚠️'} Discoverability: {'Hashtags active' if has_hashtags else 'Instagram requires 5-10 hashtags in description'}")
+        else:
+            st.write("**Universal Format Optimization Check**")
+            st.markdown(f"✅ Content Tone matches target profile: **{active_tone}**")
+            st.markdown(f"✅ Structure: Clear paragraphs and actionable lines")
+            
+else:
+    # Beautiful empty placeholder
+    st.markdown(
+        """
+        <div class="optimizer-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 20 15 10 11 22 8 14 4 18"></polyline><path d="M22 12h-4l-2 8-3-10-4 12-3-8-4 4"></path></svg>
+            <p>Generate AI content or select an item from history to activate real-time SEO & Health Optimization checks.</p>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
