@@ -1,6 +1,11 @@
 import streamlit as st
 import requests
 from streamlit_calendar import calendar
+import os
+
+# Define dynamic backend URL
+BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000").rstrip("/")
+
 
 # ----------------------------------
 # Page Config
@@ -169,7 +174,7 @@ st.sidebar.markdown(
 try:
 
     history_response = requests.get(
-        "http://127.0.0.1:8000/history"
+        f"{BACKEND_URL}/history"
     )
 
     if history_response.status_code == 200:
@@ -250,7 +255,7 @@ if st.button("Generate AI Content"):
 
         with st.spinner("Generating content..."):
             response = requests.post(
-                "http://127.0.0.1:8000/generate",
+                f"{BACKEND_URL}/generate",
                 json=payload
             )
 
@@ -313,7 +318,7 @@ if st.session_state.selected_item:
     if st.button("Delete Content"):
 
         delete_response = requests.delete(
-            f"http://127.0.0.1:8000/delete/{selected_item['id']}"
+            f"{BACKEND_URL}/delete/{selected_item['id']}"
         )
 
         if delete_response.status_code == 200:
