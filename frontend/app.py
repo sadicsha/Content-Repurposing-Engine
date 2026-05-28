@@ -12,7 +12,7 @@ BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000").rstrip("/")
 # ----------------------------------
 
 st.set_page_config(
-    page_title="Content Repurposing Engine",
+    page_title="OmniContent Studio",
     layout="wide"
 )
 
@@ -191,12 +191,12 @@ st.markdown(
 # ----------------------------------
 
 st.markdown(
-    '<div class="main-title">Content Repurposing Engine</div>',
+    '<div class="main-title">OmniContent Studio</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
-    '<div class="subtitle">Transform one piece of content into multiple platform-ready formats using AI</div>',
+    '<div class="subtitle">Repurpose a single draft into high-impact posts for LinkedIn, Instagram, X, and YouTube in one click</div>',
     unsafe_allow_html=True
 )
 
